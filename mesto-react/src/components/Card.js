@@ -28,7 +28,6 @@ function Card (props) {
         props.onCardClick(props.card);
     }
 
-
     if (cardState) {
         return (
             <article className="element" key={props.i}>
