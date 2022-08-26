@@ -6,7 +6,7 @@ class PopupWithImage extends React.Component {
     }
 
     render() {
-            const classList = `popup popup_type_card ${Object.keys(this.props.card).length != 0 ? ' popup_opened' : ''}`;
+            const classList = `popup popup_type_card ${this.props.card.link && 'popup_opened'}`;
                 return (
                     <div className={classList}>
                         <div className="popup__card-container">
