@@ -1,9 +1,9 @@
 import '../index.css';
 import React from "react";
-import Header from './ Header';
+import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import Api from '../utils/Api';
+import api from '../utils/api';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from './EditAvatarPopup';
@@ -22,30 +22,28 @@ function App() {
     const [cards, createCards] = React.useState([]);
 
     React.useEffect(() => {
-        Api.getUserInformation()
-            .then(res => editUserInformation(res))
-            .catch((err) => console.log(err))
-    }, []);
-
-    React.useEffect(() => {
-        Api.getInitialCards()
-            .then((res => {
-                createCards(res)
-            }))
+        Promise.all([
+            api.getUserInformation(),
+            api.getInitialCards()
+        ])
+            .then(([resUser, resCard]) => {
+                editUserInformation(resUser);
+                createCards(resCard)
+            })
             .catch((err) => console.log(err))
     }, []);
 
     function handleUpdateUser({name, about}) {
-        Api.setUserInformation({name, about})
+        api.setUserInformation({name, about})
             .then(() => {
-                editUserInformation({name, about});
+                editUserInformation({...currentUser, name: name, about: about});
                 closeAllPopups();
             })
             .catch((err) => console.log(err))
     }
 
     function handleUpdateAvatar({avatar}) {
-        Api.editAvatar(avatar)
+        api.editAvatar(avatar)
             .then((res) => {
                 editUserInformation({...currentUser, avatar: res.avatar});
                 closeAllPopups()
@@ -55,7 +53,7 @@ function App() {
 
     const handleCardLike = (card) => {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
-        Api.changeLikeCardStatus(card._id, !isLiked)
+        api.changeLikeCardStatus(card._id, !isLiked)
             .then((newCard) => {
                 createCards((cards) => cards.map((card) => card._id === newCard._id ? newCard : card))
             })
@@ -63,7 +61,7 @@ function App() {
     }
 
     const handleCardDelete = (card) => {
-        Api.deleteCard(card._id)
+        api.deleteCard(card._id)
             .then(() => {
                 createCards(cards.filter(el => el._id !== card._id))
             })
@@ -71,7 +69,7 @@ function App() {
     }
 
     function handleAddPlaceSubmit({name, link}) {
-        Api.postNewCard({name, link})
+        api.postNewCard({name, link})
             .then(newCard => {
                 createCards([newCard, ...cards]);
                 closeAllPopups();

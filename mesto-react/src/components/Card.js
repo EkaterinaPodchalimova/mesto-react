@@ -24,7 +24,7 @@ function Card(props) {
     }
 
     return (
-        <article className="element" key={props.i}>
+        <article className="element">
             <img className="element__photo" src={props.card.link} alt={`Изображение ${props.card.name}`}
                  onClick={handleClick}/>
             <button key={'button'} className={cardDeleteButtonClassName} type="button" aria-label="Удалить фото"
