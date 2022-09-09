@@ -71,7 +71,7 @@ class Api {
                 'Content-Type': 'application/json'
             }
         })
-            .then(res => this._getStatus(res));
+            .then(res => this._getStatus(res))
     }
 
     deleteLike(id) {
@@ -82,7 +82,15 @@ class Api {
                 'Content-Type': 'application/json'
             }
         })
-            .then(res => this._getStatus(res));
+            .then(res => this._getStatus(res))
+    }
+
+    changeLikeCardStatus(id,like) {
+        if(like) {
+            return this.addLike(id)
+        } else {
+            return this.deleteLike(id)
+        }
     }
 
     editAvatar(avatar) {
@@ -106,7 +114,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
     }
 
-    // другие методы работы с API
+// другие методы работы с API
 }
 
 export default new Api({
