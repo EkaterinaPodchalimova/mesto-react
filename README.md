@@ -10,6 +10,7 @@
 - HTML, Css, JS;
 - Figma;
 - Первая работа с React;
-- api запросы и обработчики!
+- api запросы и обработчики;
+- Переходы между страницами, авторизация и регистрация
 
 ### Git-page: https://ekaterinapodchalimova.github.io/mesto-react/
